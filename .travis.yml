@@ -13,11 +13,12 @@ cache: pip
 
 install:
   - pip install .
-  - pip install pylint black
+  - pip install pylint black pytest
 
 script:
   - pylint .
   - black --check
+  - pytest -vv
 
 notifications:
   irc:

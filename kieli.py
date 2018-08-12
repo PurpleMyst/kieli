@@ -53,6 +53,11 @@ class LSPClient:
 
         while True:
             line = self._stdout.readline()
+
+            if not line:
+                # EOF
+                return None
+
             assert line.endswith(b"\r\n"), repr(line)
             line = line[:-2].decode("ascii")
 
@@ -78,6 +83,9 @@ class LSPClient:
     def _dispatcher(self):
         while True:
             content = self._recv_content()
+
+            if content is None:
+                break
 
             if "method" in content:
                 if "id" in content:
