@@ -1,12 +1,8 @@
-# Python >=3.7 is only available on `sudo: enabled`.
-sudo: enabled
-
 language: python
 python:
   - '3.4'
   - '3.5'
   - '3.6'
-  - '3.7'
   - 'nightly'
 
 cache: pip
@@ -16,8 +12,8 @@ install:
   - pip install pylint black pytest
 
 script:
-  - pylint .
-  - black --check
+  - pylint ./kieli.py ./test_kieli.py
+  - black --check .
   - pytest -vv
 
 notifications:
