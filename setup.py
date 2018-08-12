@@ -20,4 +20,5 @@ setuptools.setup(
     license="MIT",
     url="https://github.com/PurpleMyst/kieli",
     py_modules=["kieli"],
+    install_requires=['attrs'],
 )
