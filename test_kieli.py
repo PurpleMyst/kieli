@@ -21,11 +21,7 @@ def test_initialization():
         "jsonrpc": "2.0",
         "id": 0,
         "method": "initialize",
-        "params": {
-            "processId": None,
-            "rootUri": None,
-            "capabilities": {},
-        }
+        "params": {"processId": None, "rootUri": None, "capabilities": {}},
     }
 
     client.request(
@@ -34,7 +30,7 @@ def test_initialization():
 
     client._stdin.seek(0)
     assert client._stdin.read(len(expected_stdin_prefix)) == expected_stdin_prefix
-    json_string = client._stdin.read().decode('utf-8')
+    json_string = client._stdin.read().decode("utf-8")
     assert json.loads(json_string) == expected_stdin_json_part
 
     event = threading.Event()

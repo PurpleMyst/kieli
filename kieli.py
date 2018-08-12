@@ -8,7 +8,7 @@ import attr
 
 @attr.s
 class Request:
-    id = attr.ib()      # integer
+    id = attr.ib()  # integer
     method = attr.ib()  # string
     params = attr.ib()  # dict
 
@@ -21,9 +21,9 @@ class Notification:
 
 @attr.s
 class Response:
-    id = attr.ib()                  # integer
+    id = attr.ib()  # integer
     result = attr.ib(default=None)  # dict
-    error = attr.ib(default=None)   # dict
+    error = attr.ib(default=None)  # dict
 
 
 class LSPClient:
