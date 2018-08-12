@@ -6,7 +6,8 @@ kieli
 Dependencies
 ------------
 
-None! Other than a python version that's at least 3.4.
+Python 3.4 or newer and attrs. Many other projects use attrs, so you may
+already have it installed.
 
 Installation
 ------------

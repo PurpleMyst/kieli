@@ -3,27 +3,28 @@ import json
 import subprocess
 import sys
 import threading
-from dataclasses import dataclass
+
+import attr
 
 
-@dataclass
+@attr.s
 class Request:
-    id: int
-    method: str
-    params: dict
+    id = attr.ib()      # integer
+    method = attr.ib()  # string
+    params = attr.ib()  # dict
 
 
-@dataclass
+@attr.s
 class Notification:
-    method: str
-    params: dict
+    method = attr.ib()  # string
+    params = attr.ib()  # dict
 
 
-@dataclass
+@attr.s
 class Response:
-    id: int
-    result: dict = None
-    error: dict = None
+    id = attr.ib()                  # integer
+    result = attr.ib(default=None)  # dict
+    error = attr.ib(default=None)   # dict
 
 
 class LSPClient:
