@@ -1,4 +1,5 @@
 import io
+import json
 import threading
 
 import pytest
@@ -10,25 +11,28 @@ def test_initialization():
 
     client._stdin = io.BytesIO()
 
-    expected_stdin = (
-        b"Content-Length: 119\r\n"
-        b"\r\n"
-        b'{'
-        b'"jsonrpc": "2.0", '
-        b'"id": 0, '
-        b'"method": "initialize", '
-        b'"params": {'
-        b'"processId": null, '
-        b'"rootUri": null, '
-        b'"capabilities": {}'
-        b'}'
-        b'}'
-    )
+    expected_stdin_prefix = b"Content-Length: 119\r\n\r\n"
+
+    # must not hard-code this as bytes because the order of things in the json
+    # is not the same every time on python 3.4, but the length in
+    # expected_stdin_prefix should always be same regardless of the order
+    expected_stdin_json_part = {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "method": "initialize",
+        "params": {
+            "processId": None,
+            "rootUri": None,
+            "capabilities": {},
+        }
+    }
 
     client.request("initialize", {"processId": None, "rootUri": None, "capabilities": {}})
 
     client._stdin.seek(0)
-    assert client._stdin.read() == expected_stdin
+    assert client._stdin.read(len(expected_stdin_prefix)) == expected_stdin_prefix
+    json_string = client._stdin.read().decode('utf-8')
+    assert json.loads(json_string) == expected_stdin_json_part
 
     event = threading.Event()
 
