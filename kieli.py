@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import json
 import subprocess
-import sys
 import threading
 from dataclasses import dataclass
 
@@ -40,9 +39,7 @@ class LSPClient:
         self._notification_handlers = {}
 
     def connect_to_process(self, *argv):
-        proc = subprocess.Popen(
-            argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE
-        )
+        proc = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._stdin = proc.stdin
         self._stdout = proc.stdout
         threading.Thread(target=self._dispatcher).start()
@@ -75,8 +72,7 @@ class LSPClient:
         self._stdin.write(
             b"Content-Length: %(content_length)d\r\n"
             b"\r\n"
-            b"%(content)s"
-            % {b"content_length": len(content), b"content": content}
+            b"%(content)s" % {b"content_length": len(content), b"content": content}
         )
         self._stdin.flush()
 
@@ -92,9 +88,7 @@ class LSPClient:
                     # Request
                     id = int(content["id"])
                     request = Request(
-                        id=id,
-                        method=content["method"],
-                        params=content["params"],
+                        id=id, method=content["method"], params=content["params"]
                     )
                     callback = self._request_handlers[request.method]
                     callback(request)
@@ -110,9 +104,7 @@ class LSPClient:
                 id = int(content["id"])
                 request = self._pending_requests.pop(id)
                 response = Response(
-                    id=id,
-                    result=content.get("result"),
-                    error=content.get("error"),
+                    id=id, result=content.get("result"), error=content.get("error")
                 )
 
                 callback = self._response_handlers[request.method]
@@ -131,9 +123,7 @@ class LSPClient:
         return request
 
     def notify(self, method, params):
-        self._send_content(
-            {"jsonrpc": "2.0", "method": method, "params": params}
-        )
+        self._send_content({"jsonrpc": "2.0", "method": method, "params": params})
 
         return Notification(method=method, params=params)
 

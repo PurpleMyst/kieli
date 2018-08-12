@@ -5,6 +5,7 @@ import pytest
 
 import kieli
 
+
 def test_initialization():
     client = kieli.LSPClient()
 
@@ -13,7 +14,7 @@ def test_initialization():
     expected_stdin = (
         b"Content-Length: 119\r\n"
         b"\r\n"
-        b'{'
+        b"{"
         b'"jsonrpc": "2.0", '
         b'"id": 0, '
         b'"method": "initialize", '
@@ -21,11 +22,13 @@ def test_initialization():
         b'"processId": null, '
         b'"rootUri": null, '
         b'"capabilities": {}'
-        b'}'
-        b'}'
+        b"}"
+        b"}"
     )
 
-    client.request("initialize", {"processId": None, "rootUri": None, "capabilities": {}})
+    client.request(
+        "initialize", {"processId": None, "rootUri": None, "capabilities": {}}
+    )
 
     client._stdin.seek(0)
     assert client._stdin.read() == expected_stdin
@@ -36,13 +39,19 @@ def test_initialization():
     def initialize(request, response):
         assert request.id == 0
         assert request.method == "initialize"
-        assert request.params == {"processId": None, "rootUri": None, "capabilities": {}}
+        assert request.params == {
+            "processId": None,
+            "rootUri": None,
+            "capabilities": {},
+        }
 
         assert response.id == 0
         assert response.result == {"hoverProvider": True}
         assert response.error is None
 
         event.set()
+
+    _ = initialize
 
     client._stdout = io.BytesIO(
         b"Content-Length: 44\r\n"
