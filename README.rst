@@ -12,6 +12,7 @@ Installation
 ------------
 
 To install, simply run the following:
+
 .. code:: shell
     $ python3 -m pip install .
 
@@ -20,6 +21,7 @@ Usage
 
 Here`s a simple usage example which just sends an ``initialize`` request and
 then exits.
+
 .. code:: python
     import sys
 
