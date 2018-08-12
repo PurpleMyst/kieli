@@ -3,18 +3,18 @@ python:
   - '3.4'
   - '3.5'
   - '3.6'
-  - 'nightly'
 
 cache: pip
 
 install:
   - pip install .
-  - pip install pylint black pytest
+  - pip install pylint pytest
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install black; fi
 
 script:
   - pylint ./kieli.py ./test_kieli.py
-  - black --check .
   - pytest -vv
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then black --check .; fi
 
 notifications:
   irc:
@@ -25,7 +25,3 @@ notifications:
     on_failure: always
     template:
       - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message} %{build_url}'
-
-matrix:
-  allow_failures:
-    - python: 'nightly'
