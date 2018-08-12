@@ -29,7 +29,9 @@ def test_initialization():
     )
 
     client._stdin.seek(0)
-    assert client._stdin.read(len(expected_stdin_prefix)) == expected_stdin_prefix
+    assert (
+        client._stdin.read(len(expected_stdin_prefix)) == expected_stdin_prefix
+    )
     json_string = client._stdin.read().decode("utf-8")
     assert json.loads(json_string) == expected_stdin_json_part
 
