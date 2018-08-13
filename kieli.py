@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import functools
 import subprocess
 import threading
 
@@ -139,23 +140,23 @@ class LSPClient:
 
         return Notification(method=method, params=params)
 
-    def response_handler(self, method):
-        def decorator(func):
-            self._response_handlers[method] = func
-            return func
+    def response_handler(self, method, func=None):
+        if func is None:
+            return functools.partial(self.response_handler, method)
 
-        return decorator
+        self._response_handlers[method] = func
+        return func
 
-    def request_handler(self, method):
-        def decorator(func):
-            self._request_handlers[method] = func
-            return func
+    def request_handler(self, method, func=None):
+        if func is None:
+            return functools.partial(self.request_handler, method)
 
-        return decorator
+        self._request_handlers[method] = func
+        return func
 
-    def notification_handler(self, method):
-        def decorator(func):
-            self._notification_handlers[method] = func
-            return func
+    def notification_handler(self, method, func=None):
+        if func is None:
+            return functools.partial(self.notification_handler, method)
 
-        return decorator
+        self._notification_handlers[method] = func
+        return func
