@@ -8,11 +8,11 @@ cache: pip
 
 install:
   - pip install .
-  - pip install pylint pytest
+  - pip install flake8 pytest
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install black; fi
 
 script:
-  - pylint ./kieli.py ./test_kieli.py
+  - flake8 ./kieli.py ./test_kieli.py
   - pytest -vv
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then black --check .; fi
 

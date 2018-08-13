@@ -53,8 +53,6 @@ def test_initialization():
 
         event.set()
 
-    _ = initialize
-
     client._stdout = io.BytesIO(
         b"Content-Length: 44\r\n"
         b"\r\n"
