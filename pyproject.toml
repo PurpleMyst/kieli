@@ -1,2 +1,14 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "kieli"
+author = "PurpleMyst"
+author-email = "PurpleMyst@users.noreply.github.com"
+home-page = "https://github.com/PurpleMyst/kieli"
+classifiers = ["License :: OSI Approved :: MIT License"]
+requires = ["attrs"]
+
 [tool.black]
 line-length = 79

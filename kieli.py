@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+"""Minimalistic language server protocol client."""
+
 import json
 import functools
 import subprocess
 import threading
 
 import attr
+
+__version__ = "1.2.1"
 
 
 @attr.s
