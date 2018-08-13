@@ -95,15 +95,17 @@ class LSPClient:
                         method=content["method"],
                         params=content["params"],
                     )
-                    callback = self._request_handlers[request.method]
-                    callback(request)
+                    callback = self._request_handlers.get(request.method)
+                    if callback is not None:
+                        callback(request)
                 else:
                     # Notification
                     notification = Notification(
                         method=content["method"], params=content["params"]
                     )
-                    callback = self._notification_handlers[request.method]
-                    callback(notification)
+                    callback = self._notification_handlers.get(request.method)
+                    if callback is not None:
+                        callback(notification)
             else:
                 # Response
                 id = int(content["id"])
@@ -114,8 +116,9 @@ class LSPClient:
                     error=content.get("error"),
                 )
 
-                callback = self._response_handlers[request.method]
-                callback(request, response)
+                callback = self._response_handlers.get(request.method)
+                if callback is not None:
+                    callback(request, response)
 
     def request(self, method, params):
         id = self._next_id
