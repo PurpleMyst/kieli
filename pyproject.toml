@@ -8,7 +8,9 @@ author = "PurpleMyst"
 author-email = "PurpleMyst@users.noreply.github.com"
 home-page = "https://github.com/PurpleMyst/kieli"
 classifiers = ["License :: OSI Approved :: MIT License"]
+description-file = "README.rst"
 requires = ["attrs"]
+requires-python = "~=3.4"
 
 [tool.black]
 line-length = 79
