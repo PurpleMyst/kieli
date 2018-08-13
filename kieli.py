@@ -140,6 +140,25 @@ class LSPClient:
 
         return Notification(method=method, params=params)
 
+    def respond(self, id, result=None, error=None):
+        content = {"jsonrpc": "2.0", "id": id}
+
+        if result is not None:
+            content["result"] = result
+
+        if error is not None:
+            if result is not None:
+                raise ValueError("Must specify either result xor error.")
+
+            content["error"] = error
+
+        if result is None and error is None:
+            raise ValueError("Must specify either result xor error.")
+
+        self._send_content(content)
+
+        return Response(id=id, result=result, error=error)
+
     def response_handler(self, method, func=None):
         if func is None:
             return functools.partial(self.response_handler, method)
