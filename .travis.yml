@@ -9,6 +9,7 @@ cache: pip
 install:
   - pip install .
   - pip install flake8 pytest
+  - pip install 'python-language-server[all]'  # used in a test
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install black; fi
 
 script:

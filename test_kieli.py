@@ -1,6 +1,7 @@
 import io
 import json
 import threading
+import sys
 
 import pytest
 
@@ -62,7 +63,37 @@ def test_initialization():
     # We only start the dispatcher thread after we write to stdout because
     # else it fails with an AssertionError due to `io.BytesIO.readline`
     # returning `b""` on EOF.
-    threading.Thread(target=client._dispatcher).start()
+    threading.Thread(target=client._dispatcher, daemon=True).start()
 
     if not event.wait(timeout=5):
-        pytest.fail("Timed out waiting for initialize response.")
+        pytest.fail("Timed out waiting for initialize response from mock.")
+
+
+def test_pyls_integration():
+    client = kieli.LSPClient()
+
+    event = threading.Event()
+
+    @client.response_handler("initialize")
+    def initialize(request, response):
+        assert request.id == 0
+        assert request.method == "initialize"
+        assert request.params == {
+            "processId": None,
+            "rootUri": None,
+            "capabilities": {},
+        }
+
+        assert response.id == 0
+        assert response.result is not None
+        assert response.error is None
+
+        event.set()
+
+    client.connect_to_process(sys.executable, "-m", "pyls")
+    client.request(
+        "initialize", {"processId": None, "rootUri": None, "capabilities": {}}
+    )
+
+    if not event.wait(timeout=15):
+        pytest.fail("Timed out waiting for initialize response from pyls.")

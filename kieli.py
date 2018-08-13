@@ -45,7 +45,7 @@ class LSPClient:
         )
         self._stdin = proc.stdin
         self._stdout = proc.stdout
-        threading.Thread(target=self._dispatcher).start()
+        threading.Thread(target=self._dispatcher, daemon=True).start()
 
     def _recv_content(self):
         # NB: This code assumes that the 'Content-Length' header is sent.
